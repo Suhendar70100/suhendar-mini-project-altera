@@ -1,27 +1,36 @@
 import { useState } from 'react'
 import Dashboard from './pages/dashboard/Dashboard'
-import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
+import Login from './components/Login'
+import Register from './components/Register'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import RoomRequest from './components/RoomRequest'
+import DashboardUser from './pages/dashboardUser/DashboardUser'
+import RoomRequestUser from './components/RoomRequestUser'
 
 function App() {
 
   return (
-    // <>
-    //   <Dashboard />
-    // </>
-    <div className="d-flex">
-      <div className="w-auto">
-        <Sidebar />
-      </div>
-      <div className="col">
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Register />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+        </Routes>
+      </BrowserRouter>
+      <BrowserRouter>
         <Navbar />
-        <div className="container">
-          <div className="row">
-            <Dashboard />
-          </div>
+        <div className="col">
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
+            <Route path="/room-request" element={<RoomRequest />}></Route>
+            <Route path="/dashboard-user/:id" element={<DashboardUser />}></Route>
+            <Route path="/request-user/:id" element={<RoomRequestUser />}></Route>
+          </Routes>
         </div>
-      </div>
-    </div>
+      </BrowserRouter></>
+
+
   )
 }
 
