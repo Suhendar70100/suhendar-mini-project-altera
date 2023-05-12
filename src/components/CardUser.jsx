@@ -19,7 +19,8 @@ export default function CardUser({ roomsUser }) {
                 })
                 .single()
             if (error) throw error;
-            navigate(`request-user/${id}`);
+            alert("Request Rooms Berhasil !");
+            window.location.reload();
         } catch (error) {
             alert(error.message);
         }
