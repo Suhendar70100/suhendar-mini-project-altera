@@ -19,12 +19,11 @@ export default function CardUser({ roomsUser }) {
                 })
                 .single()
             if (error) throw error;
-            navigate(`/request-user/${id}`);
+            navigate(`request-user/${id}`);
         } catch (error) {
             alert(error.message);
         }
 
-        console.log(roomsUser.id)
     }
     return (
         <>
@@ -35,17 +34,16 @@ export default function CardUser({ roomsUser }) {
                         <div className="card-body">
                             <h5 className="card-title">{roomsUser.room_name}</h5>
                             <p className="card-text">{roomsUser.description_room}</p>
-                            <p className="card-text">{roomsUser.id}</p>
                         </div>
                     </div>
-                    <button style={{ marginRight: "5px" }} type="button" data-bs-toggle="modal" data-bs-target={`#staticBackdropUser${roomsUser.id}`} className="btn btn-outline-primary btn-sm">Edit</button>
+                    <button style={{ marginRight: "5px" }} type="button" data-bs-toggle="modal" data-bs-target={`#staticBackdropUser${roomsUser.id}`} className="btn btn-outline-primary btn-sm">Request Room</button>
                 </div>
             </div>
             <div className="modal fade" id={`staticBackdropUser${roomsUser.id}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                            <h1 className="modal-title fs-5 text-center" id="staticBackdropLabel">Request Room</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">

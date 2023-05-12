@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { Link, redirect, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabse/Supabase';
 import Swal from 'sweetalert2';
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [users, setUsers] = useState([]);
-    const [text, setText] = useState([]);
     const navigate = useNavigate();
     async function handleSubmit() {
         try {
@@ -26,18 +24,15 @@ function Login() {
                 })
             } else if (data[0].is_admin == 1) {
                 navigate('/dashboard')
+                localStorage.setItem('isLoggedIn', true);
             } else {
                 navigate(`/dashboard-user/${data[0].id}`)
+                localStorage.setItem('isLoggedIn', true);
             }
         } catch (error) {
             alert(error.message);
         }
     }
-
-    console.log(users.email)
-    console.log(password);
-    console.log(email);
-
 
     return (
         <div className="wrapper">

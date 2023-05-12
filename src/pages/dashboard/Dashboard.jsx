@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import Card from "../../components/Card";
 import { supabase } from "../../supabse/Supabase";
 import Modal from "../../components/Modal";
-import Navbar from "../../components/Navbar";
 
 
 export default function Dashboard() {
     const [rooms, setRooms] = useState([]);
     const [inputText, setInputText] = useState("");
+
     useEffect(() => {
         getRoom();
     }, []);
@@ -25,7 +25,7 @@ export default function Dashboard() {
             alert(error.message);
         }
     }
-    // console.log(rooms)
+
     const filterData = rooms?.filter((el) => {
         if (inputText === "") {
             return el;
@@ -33,9 +33,9 @@ export default function Dashboard() {
             return el.room_name.toLowerCase().includes(inputText)
         }
     })
+
     return (
         <>
-            {/* <Navbar /> */}
             <div className="text-center">
                 <form method="get" action="#">
                     <input
@@ -52,9 +52,8 @@ export default function Dashboard() {
                 <Modal />
                 <div className="container mt-2">
                     <div className="row">
-                        {/* <Form /> */}
                         {filterData.map((room) => (
-                            <Card rooms={room} />
+                            <Card key={room.id} rooms={room} />
                         ))}
                     </div>
                 </div>

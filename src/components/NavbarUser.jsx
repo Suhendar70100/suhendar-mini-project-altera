@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 
-export default function Navbar() {
+export default function NavbarUser() {
     const [active, setActive] = useState(1);
     const navigate = useNavigate()
+    const { id } = useParams();
 
     const handleLogout = () => {
         localStorage.setItem("isLoggedIn", false);
@@ -22,10 +23,10 @@ export default function Navbar() {
                     <div className=" collapse navbar-collapse" id="navbarNavDropdown">
                         <ul className="navbar-nav ms-auto ">
                             <li className="nav-item">
-                                <Link to={"/dashboard"} className={active === 1 ? "nav-link mx-2 active" : "nav-link mx-2"} onClick={e => setActive(1)} aria-current="page" href="#">Room Manage</Link>
+                                <Link to={`/dashboard-user/${id}`} className={active === 1 ? "nav-link mx-2 active" : "nav-link mx-2"} onClick={e => setActive(1)} aria-current="page" href="#">Room Manage</Link>
                             </li>
                             <li className="nav-item">
-                                <Link to={'room-request'} className={active === 2 ? "nav-link mx-2 active" : "nav-link mx-2"} onClick={e => setActive(2)} href="#">Room Request</Link>
+                                <Link to={`request-user/${id}`} className={active === 2 ? "nav-link mx-2 active" : "nav-link mx-2"} onClick={e => setActive(2)} href="#">Room Request</Link>
                             </li>
                             <li className="nav-item">
                                 <button type="button" className="btn btn-dark" onClick={handleLogout}>

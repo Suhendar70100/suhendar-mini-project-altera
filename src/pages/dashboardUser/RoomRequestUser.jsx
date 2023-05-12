@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
-import { supabase } from '../supabse/Supabase';
+import { supabase } from '../../supabse/Supabase';
 import { useParams } from 'react-router-dom';
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PdfFile from '../../components/PdfFile';
+import { ToastContainer, toast } from 'react-toastify';
 
-export default function RoomRequest() {
+export default function RoomRequestUser() {
     const [requestRooms, setRequestRooms] = useState([]);
     const { id } = useParams();
     useEffect(() => {
@@ -14,7 +16,7 @@ export default function RoomRequest() {
         try {
             const { data, error } = await supabase
                 .from("rooms_request")
-                .select("*, rooms!inner(*)")
+                .select("*, rooms!inner(*),user!inner(*)")
                 .eq("id_user", id)
             if (error) throw error;
             if (data != null) {
@@ -24,18 +26,29 @@ export default function RoomRequest() {
             alert(error.message);
         }
     }
-    console.log(requestRooms)
+
+    function handleReject() {
+        toast.error('Request Anda di Tolak !', {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    }
+
+    function handleProcessed() {
+        toast.info('Request Anda Dalam Proses !', {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    }
 
     return (
         <>
             <div className="container">
                 <div className="text-center">
-                    <h3 style={{ "marginTop": "50px" }}>List Request Room</h3>
+                    <h3 style={{ marginTop: "50px" }}>List Request Room</h3>
                     <table className="table table-striped" id="myTable">
                         <thead>
                             <tr>
                                 <th scope="col">User Id</th>
-                                <th scope="col">Room Id </th>
+                                <th scope="col">Room Name </th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -46,9 +59,10 @@ export default function RoomRequest() {
                                     <td scope="row">{request.id_user}</td>
                                     <td>{request.rooms.room_name}</td>
                                     <td>{request.date}</td>
-                                    <td style={{ display: "flex" }}>
-                                        <button type="button" style={{ marginRight: "10px" }} className="btn btn-success">Accepted</button>
-                                        <button type="button" style={{ marginRight: "10px" }} className="btn btn-danger">Rejected</button>
+                                    <td>
+                                        {request.status === 2 ? <button type="button" onClick={() => handleProcessed()} className="btn btn-info">Processed</button> : request.status === 1 ? <PDFDownloadLink document={<PdfFile user={request} />} filename="FORM">
+                                            {({ loading }) => (loading ? <button type="button" className="btn btn-success">Loading Document...</button> : <button type="button" className="btn btn-success">Download</button>)}
+                                        </PDFDownloadLink> : <button type="button" onClick={() => handleReject()} className="btn btn-danger">Rejected</button>}
 
                                     </td>
                                 </tr>
@@ -57,6 +71,7 @@ export default function RoomRequest() {
                     </table>
                 </div>
             </div>
+            <ToastContainer />
         </>
     )
 }

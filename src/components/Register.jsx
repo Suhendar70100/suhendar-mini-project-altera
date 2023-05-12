@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
+    const [nim, setNim] = useState("");
     console.log(email)
     console.log(password);
     const navigate = useNavigate();
@@ -21,12 +23,13 @@ export default function Register() {
                 const { data, error } = await supabase
                     .from("user")
                     .insert({
+                        username: username,
+                        nim: nim,
                         email: email,
                         password: password
                     })
                     .single()
                 if (error) throw error;
-                // window.location.reload();
                 navigate('/login');
             } catch (error) {
                 alert(error.message);
@@ -42,6 +45,22 @@ export default function Register() {
                 Register
             </div>
             <div className="p-3 mt-3">
+                <div className="form-field align-items-center">
+                    <input
+                        onChange={(e) => setUsername(e.target.value)}
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder="Username" />
+                </div>
+                <div className="form-field align-items-center">
+                    <input
+                        onChange={(e) => setNim(e.target.value)}
+                        type="number"
+                        name="nim"
+                        id="nim"
+                        placeholder="NIM" />
+                </div>
                 <div className="form-field align-items-center">
                     <input
                         onChange={(e) => setEmail(e.target.value)}

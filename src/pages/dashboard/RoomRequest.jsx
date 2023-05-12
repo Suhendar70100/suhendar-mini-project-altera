@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
-import { supabase } from '../supabse/Supabase';
+import { supabase } from '../../supabse/Supabase';
+import { useNavigate } from 'react-router-dom';
 
 export default function RoomRequest() {
     const [requestRooms, setRequestRooms] = useState([]);
+    const navigate = useNavigate();
     useEffect(() => {
         getRequestRoom();
     }, []);
@@ -21,14 +22,44 @@ export default function RoomRequest() {
             alert(error.message);
         }
     }
-    console.log(requestRooms);
 
+    async function handleAccepted(id) {
+        try {
+            const { data, error } = await supabase
+                .from("rooms_request")
+                .update({
+                    status: 1,
+                    disable: true
+                })
+                .eq("id", id)
+            if (error) throw error;
+            window.location.reload();
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    async function handleRejected(id) {
+        try {
+            const { data, error } = await supabase
+                .from("rooms_request")
+                .update({
+                    status: 3,
+                    disable: true
+                })
+                .eq("id", id)
+            if (error) throw error;
+            window.location.reload();
+        } catch (error) {
+            alert(error.message);
+        }
+    }
 
     return (
         <>
             <div className="container">
                 <div className="text-center">
-                    <h3 style={{ "marginTop": "50px" }}>List Request Room</h3>
+                    <h3 style={{ marginTop: "50px" }}>List Request Room</h3>
                     <table className="table table-striped" id="myTable">
                         <thead>
                             <tr>
@@ -44,9 +75,9 @@ export default function RoomRequest() {
                                     <td scope="row">{request.id_user}</td>
                                     <td>{request.rooms.room_name}</td>
                                     <td>{request.date}</td>
-                                    <td style={{ display: "flex" }}>
-                                        <button type="button" style={{ marginRight: "10px" }} className="btn btn-success">Accepted</button>
-                                        <button type="button" style={{ marginRight: "10px" }} className="btn btn-danger">Rejected</button>
+                                    <td style={{ display: "flex", justifyContent: "center" }}>
+                                        <button type="button" disabled={request.disable} onClick={() => handleAccepted(request.id)} style={{ marginRight: "10px" }} className="btn btn-success">Accepted</button>
+                                        <button type="button" disabled={request.disable} onClick={() => handleRejected(request.id)} style={{ marginRight: "10px" }} className="btn btn-danger">Rejected</button>
 
                                     </td>
                                 </tr>
