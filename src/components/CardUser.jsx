@@ -20,6 +20,7 @@ export default function CardUser({ roomsUser }) {
                 .single()
             if (error) throw error;
             alert("Request Rooms Berhasil !");
+            window.location.reload();
         } catch (error) {
             alert(error.message);
         }
