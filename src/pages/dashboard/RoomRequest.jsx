@@ -13,7 +13,7 @@ export default function RoomRequest() {
         try {
             const { data, error } = await supabase
                 .from("rooms_request")
-                .select("*, rooms!inner(*)")
+                .select("*, rooms!inner(*),user!inner(*)")
             if (error) throw error;
             if (data != null) {
                 setRequestRooms(data);
@@ -63,7 +63,7 @@ export default function RoomRequest() {
                     <table className="table table-striped" id="myTable">
                         <thead>
                             <tr>
-                                <th scope="col">User Id</th>
+                                <th scope="col">Username</th>
                                 <th scope="col">Room Name </th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Actions</th>
@@ -72,7 +72,7 @@ export default function RoomRequest() {
                         <tbody>
                             {requestRooms.map((request, index) => (
                                 <tr key={index}>
-                                    <td scope="row">{request.id_user}</td>
+                                    <td scope="row">{request.user.username}</td>
                                     <td>{request.rooms.room_name}</td>
                                     <td>{request.date}</td>
                                     <td style={{ display: "flex", justifyContent: "center" }}>
